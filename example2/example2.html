@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>example2</title>
+		<script src="../lib.js">
+		</script>
+		<script>
+				var vertexShaderSource = ""+
+				"attribute vec4 apos;"+
+				"void main(){"+
+				"	gl_PointSize = 20.0;"+
+				"	gl_Position = apos;"+
+				"}"+
+				"";
+				var fragmentShaderSource =""+
+				"void main(){"+
+				"	gl_FragColor = vec4(0.4,0.4,1.0,1.0);"+
+				"}"+
+				"";
+		
+			function main(){
+			
+
+				var canvasElement = document.getElementById("webgl");
+				var gl = canvasElement.getContext("webgl");
+				
+				
+				var program = initShader(gl,vertexShaderSource,fragmentShaderSource);
+				
+				var aposLocation = gl.getAttribLocation(program,'apos');
+				gl.vertexAttrib4f(aposLocation,0.0,0.0,1.0,1.0);
+				
+				gl.clearColor(1.0,0.0,0.0,1.0);
+				gl.clear(gl.COLOR_BUFFER_BIT);
+				var data = new Float32Array([
+					0.0,0.0,
+					0.6,0.8,
+					0.2,0.5
+				]);
+				var buf = gl.createBuffer();
+				gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+				gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);
+				gl.vertexAttribPointer(aposLocation,2,gl.FLOAT,false,0,0);
+				gl.enableVertexAttribArray(aposLocation);
+				
+				gl.drawArrays(gl.POINTS,0,3);
+			
+			}
+		</script>
+	</head>
+	<body onload="main()">
+		<canvas id="webgl" width="500" height="500"></canvas>
+	<body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8"/>
+		<title></title>
+	</head>
+	<body>
+	
+		<canvas id="webgl" width="300" height="300">
+		Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+		</canvas>
+		
+		<script src="../lib.js"></script>
+		<script>
+		
+		
+		
+		
+		
+		function dotest(){
+		    var canvasElement = document.getElementById("webgl");
+			var context = canvasElement.getContext("webgl");
+			var gl = initWebGL(canvasElement);
+			console.log("aaa");
+			
+			
+			var vertexShaderSource=""+
+			"attribute vec4 apos;"+
+			"void main(){"+
+			"   gl_PointSize = 20.0;"+
+			"	gl_Position = apos;"+
+			"}";
+			
+			var fragmentShaderSource =""+
+			"void main(){"+
+			"	gl_FragColor = vec4(1.0,0.0,0.0,1.0);"+
+			"}";
+			var program = initShader(context,vertexShaderSource,fragmentShaderSource);
+			var aposLocation = context.getAttribLocation(program,'apos');
+			context.clearColor(0.2,0.3,0.5,1.0);
+			context.clear(context.COLOR_BUFFER_BIT|gl);
+			
+			var x=0.0;
+			var y=0.0;
+			for(var i=0,j=0.1;i<10;i++){
+				x-=j;
+				y+=j;
+				context.vertexAttrib4f(aposLocation,x,y,0.0,1.0);
+				context.drawArrays(context.POINT,0,1);
+			}
+		}
+		dotest();
+		</script>
+	</body>
+</html>
